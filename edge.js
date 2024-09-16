@@ -9,10 +9,10 @@ self.addEventListener("install", (e) => {
             if(!cacheNames.includes(CACHE))
             return caches.open(CACHE).then(cache => cache.addAll(statics));
         })
+        .then(e => log("install"))
     );
 });
-
-self.addEventListener("activate", (e) => {
+/* self.addEventListener("activate", (e) => {
     e.waitUntil(
         caches.keys(CACHE)
         .then(cacheNames => Promise.all(
@@ -22,12 +22,12 @@ self.addEventListener("activate", (e) => {
             })
         ))
     );
-});
+}); */
 
 self.addEventListener("fetch", (e) => {
     e.respondWith((async () => {
         let { pathname } = new URL(e.request.url);
-        log(pathname);
+        await log(pathname);
         
         if(statics.includes(pathname))
             return await responseFirstWeb(e.request);
