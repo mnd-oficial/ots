@@ -1,6 +1,5 @@
 const CACHE = "static";
-const statics = []; // ["/ots/icon.svg","/ots/mpx_imgs.json","/ots/","/ots/index.html","/ots/manifest.json"];
-const urlsToCache = []; // ["/icon.svg","/mpx_imgs.json","/","/index.html","/manifest.json"];
+const statics = ["/ots/", "/ots/index.html", "/ots/manifest.json", "/ots/icon.svg"];
 
 /********************************/
 self.addEventListener("install", (e) => {
@@ -8,7 +7,7 @@ self.addEventListener("install", (e) => {
         caches.keys()
         .then(cacheNames => {
             if(!cacheNames.includes(CACHE))
-            return caches.open(CACHE).then(cache => cache.addAll(urlsToCache));
+            return caches.open(CACHE).then(cache => cache.addAll(statics));
         })
     );
 });
@@ -28,10 +27,10 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
     e.respondWith((async () => {
         let { pathname } = new URL(e.request.url);
-        log(fetch, pathname);
-        // if(statics.includes(pathname))
-            return await responseFirstWeb(e.request);
+        log(pathname);
         
+        if(statics.includes(pathname))
+            return await responseFirstWeb(e.request);
         return await caches.open(CACHE).then(cache => cache.match(e.request));
     })());
 });
