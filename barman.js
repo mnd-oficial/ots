@@ -1,6 +1,6 @@
 const CACHE = "static";
-const statics = ["/ots/icon.svg","/ots/mpx_imgs.json","/ots/","/ots/index.html","/ots/manifest.json"];
-const urlsToCache = ["/icon.svg","/mpx_imgs.json","/","/index.html","/manifest.json"];
+const statics = []; // ["/ots/icon.svg","/ots/mpx_imgs.json","/ots/","/ots/index.html","/ots/manifest.json"];
+const urlsToCache = []; // ["/icon.svg","/mpx_imgs.json","/","/index.html","/manifest.json"];
 
 /********************************/
 self.addEventListener("install", (e) => {
@@ -28,6 +28,7 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
     e.respondWith((async () => {
         let { pathname } = new URL(e.request.url);
+        log(fetch, pathname);
         // if(statics.includes(pathname))
             return await responseFirstWeb(e.request);
         
@@ -54,4 +55,16 @@ async function responseFirstWeb(request) {
     else response = await cache.match(request);
     
     return response;
+}
+
+/********************************/
+async function log(...msgs) {
+    const cache = await caches.open(CACHE);
+    const response = await cache.match("logs.json");
+    
+    let json = [];
+    if(response) json = await response.json();
+    json.push(...msgs);
+    
+    await cache.put("logs.json", new Response(JSON.stringify(json, null, 4), {status: 200, headers: { 'Content-Type': 'application/json' }}))
 }

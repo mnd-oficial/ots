@@ -22,9 +22,18 @@
 </head>
 <body>
     <p style="text-align: center;">Bienvenido a '<strong>Only the shell</strong>' (v1.0.6)</p>
+        
+    
+    
+    
+    
+    
+    
+    
+    
     <script type="text/javascript" charset="utf-8">
         window.addEventListener("load", function () {
-            if(/* location.port === "8422" && */ 'serviceWorker' in navigator)
+            if(/* location.port === "8880" &&*/ 'serviceWorker' in navigator)
                 navigator.serviceWorker.register("./barman.js")
                 .then(console.log, console.error);
         });
