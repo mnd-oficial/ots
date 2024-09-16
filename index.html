@@ -4,9 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ots</title>
+    
+    <title>Bench</title>
+    <link rel="shortcut icon" href="./icon.svg" type="image/svg+xml"/>
+    <link rel="apple-touch-icon" href="./icon.svg" />
+    <link rel="apple-touch-startup-image" href="./icon.svg">
+    <link href="./manifest.json" rel="manifest">
+    
+    <meta name="theme-color" content="#005678">
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar" content="#002345" />
+    
+    <script src="private/main.addon.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-    <h1>Hola Ots</h1>
+    <p style="text-align: center;">Bienvenido a '<strong>Only the shell</strong>' (v1.0.6)</p>
+    <script type="text/javascript" charset="utf-8">
+        window.addEventListener("load", function () {
+            if(/* location.port === "8422" && */ 'serviceWorker' in navigator)
+                navigator.serviceWorker.register("./barman.js")
+                .then(console.log, console.error);
+        });
+        
+        /********************************/
+        window.install ??= async function(path = "./private/main.addon.js", cacheName = "static") {
+            const f = document.createElement("input");
+            f.type = "file";f.click();
+            await new Promise(res => f.onchange = res);
+            
+            const r = new FileReader;
+            r.readAsText(f.files[0]);
+            await new Promise(res => r.addEventListener("load", res));
+            
+            const content = r.result.toString();
+            const cache = await caches.open(cacheName);
+            return cache.put(path, new Response(content, {status: 200, headers: {'Content-Type': 'text/javascript'}}))
+        };
+    </script>
 </body>
 </html>
