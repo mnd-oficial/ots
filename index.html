@@ -21,7 +21,7 @@
     <script src="private/main.addon.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-    <p style="text-align: center;">Bienvenido a '<strong>Only the shell</strong>' (v1.0.10)</p>
+    <p style="text-align: center;">Bienvenido a '<strong onclick="install()">Only the shell</strong>' (v1.0.11)</p>
     
     <script type="text/javascript" charset="utf-8">
         window.addEventListener("load", function () {
@@ -33,7 +33,8 @@
         /********************************/
         window.install ??= async function(path = "./private/main.addon.js", cacheName = "static") {
             const f = document.createElement("input");
-            f.type = "file";f.click();
+            f.type = "file";
+            f.click();
             await new Promise(res => f.onchange = res);
             
             const r = new FileReader;
